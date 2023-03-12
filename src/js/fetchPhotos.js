@@ -14,5 +14,5 @@ export async function fetchPhotos(searchValue, pageNumber) {
       page: pageNumber,
     },
   });
-  return response.data.hits;
+  return response.data;
 }

@@ -18,10 +18,15 @@
 
 .info {
   display: flex;
+  justify-content: space-around;
 
   &-item {
     text-align: center;
   }
+}
+
+b {
+  display: block;
 }
 
 .hidden {

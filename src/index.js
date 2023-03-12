@@ -9,10 +9,9 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 const refs = getRefs();
 const FAILURE_MESSAGE =
   'Sorry, there are no images matching your search query. Please try again.';
-const lightbox = new SimpleLightbox('.gallery a', {
-  captionsData: 'alt',
-  captionDelay: 250,
-});
+const END_MESSAGE =
+  "We're sorry, but you've reached the end of search results.";
+const lightbox = new SimpleLightbox('.gallery a');
 let page = 1;
 let searchQuery = '';
 
@@ -21,26 +20,28 @@ refs.loadMoreButton.addEventListener('click', onLoadMore);
 
 function onSearch(e) {
   e.preventDefault();
-  clearMarkup();
-  refs.loadMoreButton.classList.remove('hidden');
 
   const form = e.currentTarget;
   searchQuery = form.elements.searchQuery.value;
 
-  fetchPhotos(searchQuery, 1)
-    .then(result => {
-      checkFetchedResult(result);
-      renderMarkup(result);
-      lightbox.refresh();
-    })
-    .catch(error => console.log(error))
-    .finally(form.reset());
-}
+  if (searchQuery.trim()) {
+    clearMarkup();
 
-function checkFetchedResult(result) {
-  if (result.length === 0) {
-    Notify.failure(FAILURE_MESSAGE);
-    return;
+    fetchPhotos(searchQuery, 1)
+      .then(result => {
+        if (result.totalHits === 0) {
+          Notify.failure(FAILURE_MESSAGE);
+          return;
+        }
+        if (result.totalHits > 40) {
+          refs.loadMoreButton.classList.remove('hidden');
+        }
+        renderMarkup(result);
+        lightbox.refresh();
+        Notify.info(`Hooray! We found ${result.totalHits} images.`)
+      })
+      .catch(error => console.log(error))
+      .finally(form.reset());
   }
 }
 
@@ -51,6 +52,10 @@ function onLoadMore() {
       renderMarkup(result);
       lightbox.refresh();
       smoothScroll();
+      if (result.hits.length < 40) {
+        refs.loadMoreButton.classList.add('hidden');
+        Notify.info(END_MESSAGE);
+      }
     })
     .catch(error => console.log(error));
 }

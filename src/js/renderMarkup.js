@@ -4,7 +4,7 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 const refs = getRefs();
 
 export function renderMarkup(photos) {
-  const markup = photos
+  const markup = photos.hits
     .map(
       photo =>
         `<div class="photo-card">
