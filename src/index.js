@@ -26,6 +26,7 @@ function onSearch(e) {
 
   if (searchQuery.trim()) {
     clearMarkup();
+    refs.loadMoreButton.classList.add('hidden');
 
     fetchPhotos(searchQuery, 1)
       .then(result => {
@@ -38,7 +39,7 @@ function onSearch(e) {
         }
         renderMarkup(result);
         lightbox.refresh();
-        Notify.info(`Hooray! We found ${result.totalHits} images.`)
+        Notify.info(`Hooray! We found ${result.totalHits} images.`);
       })
       .catch(error => console.log(error))
       .finally(form.reset());

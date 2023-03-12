@@ -1,0 +1,25 @@
+.hidden {
+  display: none;
+}
+
+.button-container {
+  position: relative;
+  height: 60px;
+}
+
+.load-more {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #226fd4;
+  width: 200px;
+  height: 40px;
+  font-size: 20px;
+  color: white;
+
+  &:hover,
+  &:focus {
+    background-color: #244988;
+  }
+}
