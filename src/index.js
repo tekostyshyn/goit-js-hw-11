@@ -11,6 +11,7 @@ const FAILURE_MESSAGE =
   'Sorry, there are no images matching your search query. Please try again.';
 const END_MESSAGE =
   "We're sorry, but you've reached the end of search results.";
+const LIMIT_PER_PAGE = 40;
 const lightbox = new SimpleLightbox('.gallery a');
 let page = 1;
 let searchQuery = '';
@@ -34,7 +35,7 @@ function onSearch(e) {
           Notify.failure(FAILURE_MESSAGE);
           return;
         }
-        if (result.totalHits > 40) {
+        if (result.totalHits > LIMIT_PER_PAGE) {
           refs.loadMoreButton.classList.remove('hidden');
         }
         renderMarkup(result);
@@ -53,7 +54,7 @@ function onLoadMore() {
       renderMarkup(result);
       lightbox.refresh();
       smoothScroll();
-      if (result.hits.length < 40) {
+      if (result.hits.length < LIMIT_PER_PAGE) {
         refs.loadMoreButton.classList.add('hidden');
         Notify.info(END_MESSAGE);
       }
